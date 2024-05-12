@@ -1,4 +1,4 @@
-# Projeto Frontend de Desenvolvimento Web 2024-1
+# projeto-dev-web-2024-frontend
 
 Projeto Frontend de Desenvolvimento Web 2024-1
 
