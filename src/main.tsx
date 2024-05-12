@@ -1,10 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import './index.scss'
+import { UserSignupPage } from './assets/pages/UserSignUpPage/index.tsx'
+import { UserSignInPage } from './assets/pages/UserSignInPage/index.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <UserSignupPage />
+    <UserSignInPage />
   </React.StrictMode>,
 )
