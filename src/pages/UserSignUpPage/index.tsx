@@ -1,9 +1,8 @@
 import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Input } from "@/components/input";
 import AuthService from "@/service/AuthService";
-import { IUserSignup } from "@/commons/interfaces";
-import { cp } from "fs";
+import { IUserSignup } from "@/commons/interface";
+import { Input } from "@/components/input";
 
 export function UserSignupPage() {
     const [form, setForm] = useState({
@@ -85,7 +84,6 @@ export function UserSignupPage() {
             setTimeout(() => {
                 navigate("/login");
             }, 1000);
-
         } else {
             setApiError("Erro ao cadastrar o usuário!");
             if (response.data.validationErrors) {
@@ -146,7 +144,7 @@ export function UserSignupPage() {
 
                             <div className="mb-1">
                                 <Input id="birthDate" name="birthDate" className="form-control" label="Data de nascimento:" type="date" value={form.birthDate}
-                                    hasError={!!errors.birthDate} error={errors.birthDate} onChange={onChange} />
+                                    placeholder="" hasError={!!errors.birthDate} error={errors.birthDate} onChange={onChange} />
                             </div>
                         </div>
                         <div className="col-6">

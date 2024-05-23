@@ -17,3 +17,14 @@ export interface IUserSignup {
     number: string;
     reference: string;
 }
+
+export interface IUserLogin {
+    email: string;
+    password: string;
+}
+
+export interface ICategory {
+    id: number;
+    name: string;
+    type: string;
+}   
