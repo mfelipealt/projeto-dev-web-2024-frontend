@@ -1,9 +1,13 @@
 import { BaseRoutes } from '@/routes/BaseRoutes'
+import { ChakraProvider } from '@chakra-ui/react'
+
 
 function App() {
   return (
     <>
-      <BaseRoutes />
+      <ChakraProvider>
+        <BaseRoutes />
+      </ChakraProvider>
     </>
   )
 }

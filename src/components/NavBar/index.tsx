@@ -65,7 +65,7 @@ export function NavBar() {
           
           <div className="col-6 justify-content-center align-items-center text-align-center">
             <ul className="navbar-nav  me-auto mb-2 mb-md-0 justify-content-center align-items-center">
-              <li className=" minor">
+              <li>
                 <NavLink
                   to="/login"
                   className={(navData) =>
@@ -85,7 +85,7 @@ export function NavBar() {
                   |
                 </NavLink>
               </li>
-              <li className=" minor">
+              <li>
                 <NavLink
                   to="/cadastrar"
                   className={(navData) =>

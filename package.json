@@ -18,7 +18,7 @@
     "@popperjs/core": "^2.11.8",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
-    "framer-motion": "^11.2.6",
+    "framer-motion": "^11.2.11",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "react": "^18.2.0",
