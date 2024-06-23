@@ -10,6 +10,7 @@ interface IInputProps {
   placeholder: string;
   hasError: boolean;
   error: string;
+  labelClassName?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 export function Input({
@@ -22,6 +23,7 @@ export function Input({
   placeholder,
   hasError,
   error,
+  labelClassName,
   onChange,
 }: IInputProps) {
   let inputClassName = className;
@@ -31,7 +33,7 @@ export function Input({
 
   return (
     <>
-      {label && <label htmlFor={name}>{label}</label>}
+      {label && <label htmlFor={name} className={labelClassName}>{label}</label>}
       <input
         type={type}
         id={id}

@@ -18,7 +18,7 @@ export function CategoryListPage() {
         }
     }
 
-    const onCLickRemove = async (id: number) => {
+    const onCLickRemove = async (id?: number) => {
         if (id) {
             const response = await CategoryService.remove(id);
             if (response.status === 200 || response.status === 204 || response.status === 201) {
@@ -49,6 +49,11 @@ export function CategoryListPage() {
                             <td>{category.id}</td>
                             <td>{category.name}</td>
                             <td>{category.type}</td>
+                            <td>
+                                <Link to={`/categories/${category.id}`} className="btn btn-primary">
+                                    Editar
+                                </Link>
+                            </td>
                             <td>
                             <button
                                 className="btn btn-danger"

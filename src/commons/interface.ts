@@ -8,14 +8,6 @@ export interface IUserSignup {
     gender: string;
     cpf: string;
     phone: string;
-    cep: string;
-    country: string;
-    state: string;
-    city: string;
-    district: string;
-    street: string;
-    number: string;
-    reference: string;
 }
 
 export interface IUserLogin {
@@ -24,7 +16,15 @@ export interface IUserLogin {
 }
 
 export interface ICategory {
-    id: number;
+    id?: number;
     name: string;
     type: string;
-}   
+}
+
+export interface IProduct {
+    id?: number;
+    name: string;
+    description: string;
+    price: number;
+    category: ICategory;
+  }

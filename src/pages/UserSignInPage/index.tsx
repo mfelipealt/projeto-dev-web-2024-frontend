@@ -1,8 +1,10 @@
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import AuthService from "@/service/AuthService";
 import { Link, useNavigate } from "react-router-dom";
 import { IUserLogin } from "@/commons/interface";
 import { Input } from "@/components/input";
+import backgroundImage from "@/assets/signin-background.jpg";
+import { Alert, AlertDescription, AlertIcon } from "@chakra-ui/react";
 
 export function UserSignInPage() {
     const [form, setForm] = useState({
@@ -13,7 +15,6 @@ export function UserSignInPage() {
     const navigate = useNavigate();
     const [pendingApiCall, setPendingApiCall] = useState(false);
     const [apiError, setApiError] = useState("");
-    const [apiSuccess, setApiSuccess] = useState("");
 
     const { login } = AuthService;
 
@@ -29,40 +30,58 @@ export function UserSignInPage() {
 
     const onClickLogin = async () => {
         setPendingApiCall(true);
-    
+
         const userLogin: IUserLogin = {
-          email: form.email,
-          password: form.password,
+            email: form.email,
+            password: form.password,
         };
         const response = await login(userLogin);
         if (response.status === 200) {
-          setPendingApiCall(false);
-          navigate("/home");
+            setPendingApiCall(false);
+            navigate("/home");
         } else {
-          setApiError(
-            "Falha ao autenticar no sistema, verifique os dados informados"
-          );
-          setPendingApiCall(false);
+            setApiError(
+                "Falha ao autenticar no sistema, verifique os dados informados"
+            );
+            setTimeout(() => {
+                setApiError("");
+            }, 3000);
+            setPendingApiCall(false);
         }
-      };
+    };
 
     return (
         <>
-            <div className="container-fluid vh-100 bg-primary-subtle d-flex justify-content-center align-items-center">
-                <div className='card bg-warning col-md-4'>
+            <div className="container-fluid vh-100 d-flex justify-content-center align-items-center"
+                style={{
+                    backgroundImage: `url(${backgroundImage})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }}
+            >                
+            <div className="card col-md-4" style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}>
+
                     <div className="container">
-                        <h1 className="text-center">Login</h1>
+                        <h1 className="text-center mt-2 text-white">Login</h1>
                     </div>
                     <div className="container">
                         <div className="mb-3">
-                            <Input id="email" name="email" className="form-control" label="Email:" type="text" value={form.email}
-                                    placeholder="Informe seu nome" hasError={false} error="" onChange={onChange} />
+                            <Input id="email" name="email" className="form-control" label="Email:" labelClassName="text-white" type="text" value={form.email}
+                                placeholder="Informe seu nome" hasError={false} error="" onChange={onChange} />
                         </div>
                         <div className="mb-3">
-                            <Input id="password" name="password" className="form-control" label="Senha:" type="password" value={form.password}
-                                    placeholder="*******" hasError={false} error="" onChange={onChange} />    
+                            <Input id="password" name="password" className="form-control" label="Senha:" labelClassName="text-white" type="password" value={form.password}
+                                placeholder="*******" hasError={false} error="" onChange={onChange} />
                         </div>
                     </div>
+                    {apiError && (
+                        <div className="alert alert-danger text-center" style={{ width: "80%", margin: "20px auto" }}>
+                            <Alert status='error' flexDirection='column'>
+                            <AlertIcon boxSize='40px'/>
+                            <AlertDescription  maxWidth='sm' mt={4}>{apiError}</AlertDescription>
+                            </Alert>
+                        </div>
+                    )}
                     <div>
                         <div className="container text-center">
                             <button className="btn btn-primary mb-2" onClick={onClickLogin}>Login</button>
