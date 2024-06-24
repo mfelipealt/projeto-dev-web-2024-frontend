@@ -1,7 +1,7 @@
 import { ICategory } from "@/commons/interface";
 import CategoryService from "@/service/CategoryService";
 import { useEffect, useState } from "react";
-import { Card, CardHeader, CardBody, CardFooter, Stack, Heading, Image, Text, Divider, ButtonGroup, Button } from '@chakra-ui/react'
+import { Card, Stack, Heading, Image } from '@chakra-ui/react'
 import logo from "@/assets/utfpr-logo.png";
 import backgroundImage from "@/assets/categories-background.jpg";
 import { NavLink } from "react-router-dom";
