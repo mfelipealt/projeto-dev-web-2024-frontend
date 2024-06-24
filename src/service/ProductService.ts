@@ -43,11 +43,23 @@ const remove = async (id: number): Promise<any> => {
   return response;
 };
 
+const findByCategory = async (categoryName: string): Promise<any> => {
+  let response;
+  try {
+    response = await api.get(`${productURL}/category/${categoryName}`);
+  } catch (err: any) {
+    response = err.response;
+  }
+  return response;
+}
+
+
 const ProductService = {
   save,
   findAll,
   findOne,
   remove,
+  findByCategory,
 };
 
 export default ProductService;

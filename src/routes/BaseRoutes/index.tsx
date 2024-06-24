@@ -7,6 +7,7 @@ import { CategoryListPage } from "@/pages/CategoryListPage";
 import { ProductListPage } from "@/pages/ProductListPage";
 import { ProductFormPage } from "@/pages/ProductFormPage";
 import { NavBar } from "@/components/NavBar";
+import { CategoryProductsPage } from "@/pages/CategoryProductPages";
 
 export function BaseRoutes() {
   return (
@@ -20,6 +21,7 @@ export function BaseRoutes() {
         <Route path="/" element={<HomePage />} />
         <Route path="/products" element={<ProductListPage />} />
         <Route path="/products/:id" element={<ProductFormPage />} />
+        <Route path="/category/:categoryName" element={<CategoryProductsPage />} />
 
         {/* Protected Routes */}
         <Route element={<AuthenticatedRoutes />}>

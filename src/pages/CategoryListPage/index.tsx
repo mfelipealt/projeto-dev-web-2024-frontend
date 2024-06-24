@@ -33,7 +33,7 @@ export function CategoryListPage() {
                         {data.map((category: ICategory) => (
                             <div className="col-md-4 mb-4 d-flex justify-content-center" key={category.id}>
                                 <NavLink
-                                    to={`/${category.name}`}
+                                    to={`/category/${category.name}`}
                                     className={(navData) =>
                                         navData.isActive ? "nav-link text-white" : "nav-link text-white"
                                     }

@@ -23,16 +23,6 @@ const findAll = async (): Promise<any> => {
     return response;
 }
 
-export const remove = async (id: number): Promise<any> => {
-    let response;
-    try {
-        response = await api.delete(`${URL}/${id}`);
-    } catch (error: any) {
-        response = error.response;
-    }
-    return response;
-}
-
 export const findById = async (id: number): Promise<any> => {
     let response;
     try {
@@ -43,6 +33,6 @@ export const findById = async (id: number): Promise<any> => {
     return response;
 }
 
-const CategoryService = { save, findAll, remove, findById };
+const CategoryService = { save, findAll, findById };
 
 export default CategoryService;
