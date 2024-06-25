@@ -10,7 +10,7 @@ import Slider from "react-slick";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-export function ProductListPage() {
+export function ProductDetails() {
   const [data, setData] = useState<IProduct[]>([]);
   const [apiError, setApiError] = useState("");
   const { findAll } = ProductService;
@@ -94,7 +94,7 @@ export function ProductListPage() {
               {groupedProducts[categoryId].map((product: IProduct) => (
                 <div key={product.id}>
                   <NavLink
-                    to={`/products/${product.id}`}
+                    to={`/${product.name}`}
                     className={(navData) =>
                       navData.isActive ? "nav-link text-white" : "nav-link text-white"
                     }

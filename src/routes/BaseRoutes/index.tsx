@@ -5,9 +5,9 @@ import { UserSignupPage } from "@/pages/UserSignUpPage";
 import { AuthenticatedRoutes } from "@/routes/AuthenticatedRoutes";
 import { CategoryListPage } from "@/pages/CategoryListPage";
 import { ProductListPage } from "@/pages/ProductListPage";
-import { ProductFormPage } from "@/pages/ProductFormPage";
 import { NavBar } from "@/components/NavBar";
 import { CategoryProductsPage } from "@/pages/CategoryProductPages";
+import { ProductDetails } from "@/pages/ProductDetails";
 
 export function BaseRoutes() {
   return (
@@ -20,7 +20,7 @@ export function BaseRoutes() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/products" element={<ProductListPage />} />
-        <Route path="/products/:id" element={<ProductFormPage />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/category/:categoryId" element={<CategoryProductsPage />} />
         <Route path="/categories" element={<CategoryListPage />} />
 
