@@ -43,10 +43,10 @@ const remove = async (id: number): Promise<any> => {
   return response;
 };
 
-const findByCategory = async (categoryName: string): Promise<any> => {
+const findByCategory = async (categoryId: number): Promise<any> => {
   let response;
   try {
-    response = await api.get(`${productURL}/category/${categoryName}`);
+    response = await api.get(`${productURL}/category/${categoryId}`);
   } catch (err: any) {
     response = err.response;
   }

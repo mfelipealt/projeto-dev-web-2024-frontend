@@ -22,10 +22,10 @@ export function BaseRoutes() {
         <Route path="/products" element={<ProductListPage />} />
         <Route path="/products/:id" element={<ProductFormPage />} />
         <Route path="/category/:categoryName" element={<CategoryProductsPage />} />
+        <Route path="/categories" element={<CategoryListPage />} />
 
         {/* Protected Routes */}
         <Route element={<AuthenticatedRoutes />}>
-            <Route path="/categories" element={<CategoryListPage />} />
         </Route>
       </Routes>
     </>
