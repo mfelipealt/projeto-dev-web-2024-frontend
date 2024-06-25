@@ -21,7 +21,7 @@ export function BaseRoutes() {
         <Route path="/" element={<HomePage />} />
         <Route path="/products" element={<ProductListPage />} />
         <Route path="/products/:id" element={<ProductFormPage />} />
-        <Route path="/category/:categoryName" element={<CategoryProductsPage />} />
+        <Route path="/category/:categoryId" element={<CategoryProductsPage />} />
         <Route path="/categories" element={<CategoryListPage />} />
 
         {/* Protected Routes */}
