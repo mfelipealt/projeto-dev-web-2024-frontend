@@ -55,7 +55,7 @@ export function ProductListPage() {
     ]
   };
   
-  function SampleNextArrow(props) {
+  function SampleNextArrow(props: any) {
     const { className, style, onClick } = props;
     return (
       <div className={className} style={{ ...style, display: "block", background: "transparent" }} onClick={onClick}>
@@ -64,7 +64,7 @@ export function ProductListPage() {
     );
   }
 
-  function SamplePrevArrow(props) {
+  function SamplePrevArrow(props: any) {
     const { className, style, onClick } = props;
     return (
       <div className={className} style={{ ...style, display: "block", background: "transparent" }} onClick={onClick}>
@@ -94,7 +94,7 @@ export function ProductListPage() {
               {groupedProducts[categoryId].map((product: IProduct) => (
                 <div key={product.id}>
                   <NavLink
-                    to={`/products/${product.id}`}
+                    to={`/product/${product.id}`}
                     className={(navData) =>
                       navData.isActive ? "nav-link text-white" : "nav-link text-white"
                     }

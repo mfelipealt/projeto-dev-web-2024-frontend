@@ -28,7 +28,7 @@ export function CategoryProductsPage() {
                 {products.map((product: IProduct) => ( 
                    <div key={product.id}>
                    <NavLink
-                     to={`/${product.name}`}
+                     to={`/product/${product.id}`}
                      className={(navData) =>
                        navData.isActive ? "nav-link text-white" : "nav-link text-white"
                      }
