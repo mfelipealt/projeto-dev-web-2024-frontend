@@ -8,6 +8,7 @@ import { ProductListPage } from "@/pages/ProductListPage";
 import { NavBar } from "@/components/NavBar";
 import { CategoryProductsPage } from "@/pages/CategoryProductPages";
 import { ProductDetails } from "@/pages/ProductDetails";
+import { UserShoppingDetailsPage } from "@/pages/UserShoppingDetailsPage";
 
 export function BaseRoutes() {
   return (
@@ -26,6 +27,7 @@ export function BaseRoutes() {
 
         {/* Protected Routes */}
         <Route element={<AuthenticatedRoutes />}>
+          <Route path="/user/my-purchases" element={<UserShoppingDetailsPage/>} />
         </Route>
       </Routes>
     </>
