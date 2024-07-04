@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import {  useParams } from "react-router-dom";
+import {  NavLink, useParams } from "react-router-dom";
 import ProductService from "@/service/ProductService";
 import { IProduct } from "@/commons/interface";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Button, StackDivider, Text } from "@chakra-ui/react";
 import logo from "@/assets/utfpr-logo.png";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -37,8 +37,11 @@ export function ProductDetails() {
               image={logo}
               title={data.name}
               description={data.description}
-              price={data.price.toString()}
+              price={data.price}
+              discount={data.discount}
             />
+            
+            
           </Box>
         ) : (
           <Text>{apiError  || "Carregando..."}</Text>
