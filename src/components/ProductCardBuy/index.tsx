@@ -3,12 +3,10 @@ import { Box, Flex, Stack, Image, Text, Button, Divider } from '@chakra-ui/react
 const ProductCardBuy = ({ image, title, description, price, discount }: any) => {
     return (
       <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
-        <Flex direction="row">
-          <Image src={image} alt={title} maxW={{ base: '100%', sm: '200px' }} objectFit="cover" />
-
-          
+        <Flex direction="column">
   
-          <Box p="6" flex="1">
+          <Box p="6">
+            <Image src={image} alt={title} maxW={{ base: '100%', sm: '200px' }} objectFit="cover" />
             <Stack spacing={3}>
               <Text fontWeight="bold" fontSize="xl">
                 {title}
@@ -27,11 +25,11 @@ const ProductCardBuy = ({ image, title, description, price, discount }: any) => 
               </Stack>
 
             </Stack>
+          </Box>
 
+          <Box p="6" >
             <Divider my={4} color='blue.600' />
             <Text>{description}</Text>
-
-
           </Box>
           
         </Flex>
