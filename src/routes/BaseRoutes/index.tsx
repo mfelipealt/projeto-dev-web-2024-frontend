@@ -7,7 +7,7 @@ import { CategoryListPage } from "@/pages/CategoryListPage";
 import { ProductListPage } from "@/pages/ProductListPage";
 import { NavBar } from "@/components/NavBar";
 import { CategoryProductsPage } from "@/pages/CategoryProductPages";
-import { ProductDetails } from "@/pages/ProductDetails";
+import { ProductDetails } from "@/pages/ProductDetailsPage";
 import { UserShoppingDetailsPage } from "@/pages/UserShoppingDetailsPage";
 
 export function BaseRoutes() {
