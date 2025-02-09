@@ -90,9 +90,9 @@ export function UserPage() {
 
             // Busca os detalhes de cada produto *antes* de renderizar
             const productDetailPromises = fetchedOrders.flatMap(order =>
-                order.products.map(async (product) => {
-                    const details = await ProductService.findOne(product.productId);
-                    return { [product.productId]: details.data }; // Armazena os detalhes pelo ID do produto
+                order.shoppingCartProducts.map(async (shoppingCartProduct) => {
+                    const details = await ProductService.findOne(shoppingCartProduct.productId);
+                    return { [shoppingCartProduct.productId]: details.data }; // Armazena os detalhes pelo ID do produto
                 })
             );
 
@@ -429,19 +429,19 @@ export function UserPage() {
                                             </AccordionButton>
                                         </h2>
                                         <AccordionPanel pb={4}>
-                                        {order.products.map((product) => {
-                                            const details = productDetails[product.productId];
+                                        {order.shoppingCartProducts.map((shoppingCartProduct) => {
+                                            const details = productDetails[shoppingCartProduct.productId];
                                             if (!details) return null;
 
                                             return (
-                                                <Box key={product.productId} borderWidth="1px" borderRadius="md" p={3} mb={2}>
-                                                    <Image src={logo} alt="Imagem do produto" boxSize="150px" />
-                                                    <Text><strong>Produto ID:</strong> {product.productId}</Text>
+                                                <Box key={shoppingCartProduct.productId} borderWidth="1px" borderRadius="md" p={3} mb={2}>
+                                                    <Image src={details.imageName} alt="Imagem do produto" boxSize="150px" />
+                                                    <Text><strong>Produto ID:</strong> {shoppingCartProduct.productId}</Text>
                                                     <Text><strong>Nome:</strong> {details.name}</Text>
                                                     <Text><strong>Descrição:</strong> {details.description}</Text>
                                                     <Text><strong>Categoria:</strong> {details.category?.name}</Text>
-                                                    <Text><strong>Quantidade:</strong> {product.quantity}</Text>
-                                                    <Text><strong>Preço Final:</strong> {product.finalPrice}</Text>
+                                                    <Text><strong>Quantidade:</strong> {shoppingCartProduct.quantity}</Text>
+                                                    <Text><strong>Preço Final:</strong> {shoppingCartProduct.finalPrice}</Text>
                                                 </Box>
                                             );
                                         })}

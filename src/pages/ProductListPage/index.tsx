@@ -114,7 +114,7 @@ export function ProductListPage() {
                         }
                       >
                         <Image
-                          src={logo}
+                          src={product.imageName}
                           alt='Product Image'
                         />
                         <Stack mt='2' className="justify-content-center align-items-center">

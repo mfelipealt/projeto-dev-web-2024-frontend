@@ -28,6 +28,8 @@ export interface IProduct {
     price: number;
     discount: number;
     category: ICategory;
+    imageName?: string;
+    contentType?: string;
 }
 
 export interface ICartItem {
@@ -49,7 +51,7 @@ export interface IShoppingCart {
     dateTime: string;
     payment: string;
     totalPurchase: number;
-    products: IShoppingCartProduct[];
+    shoppingCartProducts: IShoppingCartProduct[];
 }
 
 export interface IAddress {

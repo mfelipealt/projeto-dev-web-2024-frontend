@@ -8,7 +8,7 @@ const finalizePurchase = async (cartItems: ICartItem[]): Promise<any> => {
   const payment = "APPROVED";
   const totalPurchase = 0.0; 
 
-  const products: IShoppingCartProduct[] = cartItems.map((item) => ({
+  const shoppingCartProducts: IShoppingCartProduct[] = cartItems.map((item) => ({
     productId: item.id,
     quantity: item.quantity,
     finalPrice: item.price - item.price * item.discount,
@@ -18,7 +18,7 @@ const finalizePurchase = async (cartItems: ICartItem[]): Promise<any> => {
     dateTime,
     payment,
     totalPurchase,
-    products,
+    shoppingCartProducts,
   };
 
   let response;

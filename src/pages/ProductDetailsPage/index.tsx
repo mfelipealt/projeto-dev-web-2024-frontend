@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import {  NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ProductService from "@/service/ProductService";
 import { IProduct } from "@/commons/interface";
 import { Box, Text } from "@chakra-ui/react";
-import logo from "@/assets/utfpr-logo.png";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@/pages/ProductDetailsPage/index.css";
@@ -35,18 +34,16 @@ export function ProductDetails() {
         {data ? (
           <Box className="product-card-container" p={5}>
             <ProductCardBuy
-              image={logo}
+              image={data.imageName} // URL dinâmica
               title={data.name}
               description={data.description}
               price={data.price}
               discount={data.discount}
             />
-            
           </Box>
         ) : (
-          <Text>{apiError  || "Carregando..."}</Text>
+          <Text>{apiError || "Carregando..."}</Text>
         )}
-      
       </main>
     </>
   );
