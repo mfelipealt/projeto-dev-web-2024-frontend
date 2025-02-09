@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import ProductService from "@/service/ProductService";
 import { IProduct } from "@/commons/interface";
-import { Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Image, Stack, Text } from "@chakra-ui/react";
+import { Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Image, Stack, Text, useToast } from "@chakra-ui/react"; // Import useToast
 import logo from "@/assets/utfpr-logo.png";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -13,7 +13,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 export function ProductListPage() {
   const [data, setData] = useState<IProduct[]>([]);
   const [apiError, setApiError] = useState("");
-  const { findAll } = ProductService;
+  const { findAll, addToCart } = ProductService;
+  const toast = useToast();
 
   useEffect(() => {
     loadData();
@@ -54,7 +55,7 @@ export function ProductListPage() {
       }
     ]
   };
-  
+
   function SampleNextArrow(props: any) {
     const { className, style, onClick } = props;
     return (
@@ -82,6 +83,17 @@ export function ProductListPage() {
     return acc;
   }, {});
 
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    toast({
+      title: "Produto adicionado com sucesso ao carrinho",
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+      position: "bottom-center"
+    });
+  };
+
   return (
     <>
       <main className="container">
@@ -93,14 +105,14 @@ export function ProductListPage() {
             <Slider {...settings}>
               {groupedProducts[categoryId].map((product: IProduct) => (
                 <div key={product.id}>
-                  <NavLink
-                    to={`/product/${product.id}`}
-                    className={(navData) =>
-                      navData.isActive ? "nav-link text-white" : "nav-link text-white"
-                    }
-                  >
-                    <Card borderRadius='lg'>
-                      <CardBody>
+                  <Card borderRadius='lg'>
+                    <CardBody>
+                      <NavLink
+                        to={`/product/${product.id}`}
+                        className={(navData) =>
+                          navData.isActive ? "nav-link text-white" : "nav-link text-white"
+                        }
+                      >
                         <Image
                           src={logo}
                           alt='Product Image'
@@ -114,20 +126,20 @@ export function ProductListPage() {
                         <Text color='blue.600' fontSize='2xl'>
                           Por: R${(product.price - (product.price * product.discount)).toFixed(2)}
                         </Text>
-                      </CardBody>
-                      <Divider color='blue.600' />
-                      <CardFooter>
-                        <ButtonGroup spacing='2'>
-                          <Button variant='solid' colorScheme='blue'>
-                            Comprar
-                          </Button>
-                          <Button variant='ghost' colorScheme='blue'>
-                            + Carrinho
-                          </Button>
-                        </ButtonGroup>
-                      </CardFooter>
-                    </Card>
-                  </NavLink>
+                      </NavLink>
+                    </CardBody>
+                    <Divider color='blue.600' />
+                    <CardFooter>
+                      <ButtonGroup spacing='2'>
+                        <Button variant='solid' colorScheme='blue'>
+                          Comprar
+                        </Button>
+                        <Button variant='ghost' colorScheme='blue' onClick={() => handleAddToCart(product)}> {/* Chame a nova função */}
+                          + Carrinho
+                        </Button>
+                      </ButtonGroup>
+                    </CardFooter>
+                  </Card>
                 </div>
               ))}
             </Slider>
