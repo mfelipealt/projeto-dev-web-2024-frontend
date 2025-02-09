@@ -11,6 +11,7 @@ const finalizePurchase = async (cartItems: ICartItem[]): Promise<any> => {
   const products: IShoppingCartProduct[] = cartItems.map((item) => ({
     productId: item.id,
     quantity: item.quantity,
+    finalPrice: item.price - item.price * item.discount,
   }));
 
   const shoppingCart: IShoppingCart = {
@@ -29,8 +30,20 @@ const finalizePurchase = async (cartItems: ICartItem[]): Promise<any> => {
   return response;
 };
 
+const getOrders = async (): Promise<IShoppingCart[]> => {
+  let response;
+  try {
+    response = await api.get(shoppingCartURL);
+    return response.data;
+  } catch (err: any) {
+    response = err.response;
+    return [];
+  }
+};
+
 const ShoppingCartService = {
   finalizePurchase,
+  getOrders,
 };
 
 export default ShoppingCartService;

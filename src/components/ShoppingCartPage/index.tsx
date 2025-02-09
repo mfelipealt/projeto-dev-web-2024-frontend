@@ -17,20 +17,12 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useNavigate } from "react-router-dom";
 import AuthService from "@/service/AuthService";
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  discount: number;
-  image: string;
-  quantity: number;
-}
+import { ICartItem } from "@/commons/interface";
 
 export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
 
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const navigate = useNavigate(); // Inicialize useNavigate
+  const [cartItems, setCartItems] = useState<ICartItem[]>([]);
+  const navigate = useNavigate(); 
   const toast = useToast();
   const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
