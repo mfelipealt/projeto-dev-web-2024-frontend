@@ -60,6 +60,7 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () =
         position: "bottom"
       });
       onClose();
+      localStorage.setItem('redirectAfterLogin', '/checkout');
       navigate("/login"); // Redireciona para a tela de login
       return; // Importante: impede a execução do código abaixo se o usuário não estiver logado
     }

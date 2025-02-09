@@ -38,7 +38,12 @@ export function UserSignInPage() {
         const response = await login(userLogin);
         if (response.status === 200) {
             setPendingApiCall(false);
-            navigate("/home");
+            const redirectUrl = localStorage.getItem("redirectAfterLogin");
+            if (redirectUrl) {
+                localStorage.removeItem("redirectAfterLogin");
+                navigate(redirectUrl);
+            }
+            else navigate("/home");
         } else {
             setApiError(
                 "Falha ao autenticar no sistema, verifique os dados informados"
