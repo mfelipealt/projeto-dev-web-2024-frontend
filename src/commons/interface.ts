@@ -28,4 +28,24 @@ export interface IProduct {
     price: number;
     discount: number;
     category: ICategory;
-  }
+}
+
+export interface ICartItem {
+    id: number;
+    name: string;
+    quantity: number;
+    price: number;
+    discount: number;
+}
+
+export interface IShoppingCartProduct {
+    productId: number;
+    quantity: number;
+}
+
+export interface IShoppingCart {
+    dateTime: string;
+    payment: string;
+    totalPurchase: number;
+    products: IShoppingCartProduct[];
+}

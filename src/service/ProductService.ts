@@ -53,6 +53,21 @@ const findByCategory = async (categoryId: number): Promise<any> => {
   return response;
 }
 
+const addToCart = (product: IProduct) => {
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  // Verifica se o produto já está no carrinho
+  const existingProduct = cart.find((item: any) => item.id === product.id);
+
+  if (existingProduct) {
+    existingProduct.quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+};
+
 
 const ProductService = {
   save,
@@ -60,6 +75,7 @@ const ProductService = {
   findOne,
   remove,
   findByCategory,
+  addToCart,
 };
 
 export default ProductService;

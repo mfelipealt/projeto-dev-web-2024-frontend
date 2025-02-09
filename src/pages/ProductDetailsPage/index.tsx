@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import {  NavLink, useParams } from "react-router-dom";
 import ProductService from "@/service/ProductService";
 import { IProduct } from "@/commons/interface";
-import { Box, Button, StackDivider, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import logo from "@/assets/utfpr-logo.png";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "@/pages/ProductDetailsPage/index.css";
 import ProductCardBuy from "@/components/ProductCardBuy";
 
 export function ProductDetails() {
@@ -32,7 +33,7 @@ export function ProductDetails() {
     <>
       <main className="container-fluid vh-100">
         {data ? (
-          <Box p={5}>
+          <Box className="product-card-container" p={5}>
             <ProductCardBuy
               image={logo}
               title={data.name}
@@ -40,7 +41,6 @@ export function ProductDetails() {
               price={data.price}
               discount={data.discount}
             />
-            
             
           </Box>
         ) : (

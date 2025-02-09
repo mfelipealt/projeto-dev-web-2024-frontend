@@ -38,11 +38,33 @@ const logout = () => {
     api.defaults.headers.common["Authorization"] = "";
   };
 
+const getCurrentUser = async () => {
+    const token = localStorage.getItem("token");
+    console.log("token:" + token);
+    
+    let response;
+      try {
+        response = await api.get("/users/me", {
+          headers: {
+              Authorization: `Bearer ${token ? JSON.parse(token) : ""}`,
+          },
+        });
+        if (response.status === 200) {
+          response = response.data;
+        }
+      } catch (err: any) {
+        response = err.response;
+      }
+      console.log("response.data:" + response.data);
+      return response;
+};
+
 const AuthService = {
     signup,
     login,
     isAuthenticated,
     logout,
+    getCurrentUser,
 };
 
 export default AuthService;

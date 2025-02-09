@@ -7,8 +7,9 @@ import { CategoryListPage } from "@/pages/CategoryListPage";
 import { ProductListPage } from "@/pages/ProductListPage";
 import { NavBar } from "@/components/NavBar";
 import { CategoryProductsPage } from "@/pages/CategoryProductPages";
-import { ProductDetails } from "@/pages/ProductDetails";
+import { ProductDetails } from "@/pages/ProductDetailsPage";
 import { UserShoppingDetailsPage } from "@/pages/UserShoppingDetailsPage";
+import { CheckoutPage } from "@/pages/CheckoutPage";
 
 export function BaseRoutes() {
   return (
@@ -28,6 +29,7 @@ export function BaseRoutes() {
         {/* Protected Routes */}
         <Route element={<AuthenticatedRoutes />}>
           <Route path="/user/my-purchases" element={<UserShoppingDetailsPage/>} />
+          <Route path="/checkout" element={<CheckoutPage/>} />
         </Route>
       </Routes>
     </>
