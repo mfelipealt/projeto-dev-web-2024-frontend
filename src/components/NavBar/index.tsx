@@ -79,7 +79,7 @@ export function NavBar() {
               {isAuthenticated ? (
                 <>
                   <li>
-                    <span className="nav-link text-white">Olá, {userName}!</span>
+                    <span className="nav-link text-white truncate">Olá, {userName}!</span>
                   </li>
                   <li className="minor">
                     <span className="nav-link text-white">|</span>
