@@ -138,6 +138,7 @@ export function UserPage() {
             toast({ title: "Erro ao adicionar endereço", description: "Tente novamente.", status: "error", duration: 5000, isClosable: true });
         }
     };
+    
     if (isLoading) {
         return <Spinner />;
     }

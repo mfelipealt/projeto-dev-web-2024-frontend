@@ -105,7 +105,7 @@ export function ProductListPage() {
             <Slider {...settings}>
               {groupedProducts[categoryId].map((product: IProduct) => (
                 <div key={product.id}>
-                  <Card borderRadius='lg'>
+                  <Card borderRadius='lg' mx={4} mb={4} borderWidth={0.5}>
                     <CardBody>
                       <NavLink
                         to={`/product/${product.id}`}
@@ -117,7 +117,7 @@ export function ProductListPage() {
                           src={product.imageName}
                           alt='Product Image'
                         />
-                        <Stack mt='2' className="justify-content-center align-items-center">
+                        <Stack mt='2' className="justify-content-center" color='blue.900'>
                           <Heading size='md'>{product.name}</Heading>
                         </Stack>
                         <Text className="risk" color='grey' textDecorationLine="line-through">

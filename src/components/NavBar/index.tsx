@@ -23,17 +23,15 @@ export function NavBar() {
             console.log("user.name:" + user.name);
           } else {
             setIsAuthenticated(false);
-            navigate("/login", { replace: true });
           }
         } catch (error) {
           setIsAuthenticated(false);
-          navigate("/login", { replace: true });
         }
       }
     };
 
     checkAuth();
-  }, [isAuthenticated, navigate]);
+  }, [navigate]);
 
   const onClickLogout = () => {
     AuthService.logout();

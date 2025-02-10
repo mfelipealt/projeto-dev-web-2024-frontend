@@ -42,8 +42,12 @@ export function UserSignInPage() {
             if (redirectUrl) {
                 localStorage.removeItem("redirectAfterLogin");
                 navigate(redirectUrl);
+                window.location.reload();
             }
-            else navigate("/home");
+            else {
+                navigate("/home");
+                window.location.reload();
+            }
         } else {
             setApiError(
                 "Falha ao autenticar no sistema, verifique os dados informados"

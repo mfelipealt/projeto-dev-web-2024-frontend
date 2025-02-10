@@ -1,0 +1,13 @@
+.selected-address {
+    border-color: blue.500; /* Ou a cor que você preferir */
+    box-shadow: 0 0 5px blue; /* Adiciona uma sombra azul */
+};
+
+.boxStyle { 
+    border-width: "1px";
+    border-radius: "md";
+    padding: 4;
+    width: "fit-content";
+    min-width: "200px";
+    cursor: "pointer";
+};
