@@ -9,12 +9,16 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ReactPaginate from 'react-paginate';
+import './index.css'; 
 
 export function ProductListPage() {
   const [data, setData] = useState<IProduct[]>([]);
   const [apiError, setApiError] = useState("");
   const { findAll, addToCart } = ProductService;
   const toast = useToast();
+  const [currentPage, setCurrentPage] = useState(0); // Começa em 0 para react-paginate
+  const categoriesPerPage = 2;
 
   useEffect(() => {
     loadData();
@@ -94,18 +98,29 @@ export function ProductListPage() {
     });
   };
 
+  const categoryKeys = Object.keys(groupedProducts);
+  const pageCount = Math.ceil(categoryKeys.length / categoriesPerPage);
+
+  const handlePageClick = (event) => {
+      setCurrentPage(event.selected);
+  };
+
+  const offset = currentPage * categoriesPerPage;
+  const currentPageCategories = categoryKeys.slice(offset, offset + categoriesPerPage);
+
+  
   return (
     <>
-      <main className="container">
-        {Object.keys(groupedProducts).map((categoryId) => (
-          <div key={categoryId}>
-            <Heading size='lg' mb={5}>
-              {groupedProducts[categoryId][0].category.name}
-            </Heading>
-            <Slider {...settings}>
-              {groupedProducts[categoryId].map((product: IProduct) => (
-                <div key={product.id}>
-                  <Card borderRadius='lg' mx={4} mb={4} borderWidth={0.5}>
+        <main className="container">
+            {currentPageCategories.map((categoryId) => ( // Mapeia currentPageCategories
+                <div key={categoryId}>
+                    <Heading size='lg' mb={5}>
+                        {groupedProducts[categoryId][0].category.name}
+                    </Heading>
+                    <Slider {...settings}>
+                        {groupedProducts[categoryId].map((product: IProduct) => (
+                            <div key={product.id}>
+                                <Card borderRadius='lg' mx={4} mb={4} borderWidth={0.5}>
                     <CardBody>
                       <NavLink
                         to={`/product/${product.id}`}
@@ -145,18 +160,18 @@ export function ProductListPage() {
             </Slider>
           </div>
         ))}
+        <ReactPaginate
+                    previousLabel="Anterior"
+                    nextLabel="Próximo"
+                    pageCount={pageCount}
+                    onPageChange={handlePageClick}
+                    containerClassName="pagination"
+                    activeClassName="active"
+                    marginPagesDisplayed={2} // Número de páginas exibidas nas bordas
+                    pageRangeDisplayed={5}    // Número de páginas exibidas no centro
+                />
       </main>
-      <footer className="justify-content-center align-items-center">
-        <nav className="justify-content-center align-items-center">
-          <ul className="pagination">
-            <li className="page-item"><a className="page-link" href="#">Anterior</a></li>
-            <li className="page-item"><a className="page-link" href="#">1</a></li>
-            <li className="page-item"><a className="page-link" href="#">2</a></li>
-            <li className="page-item"><a className="page-link" href="#">3</a></li>
-            <li className="page-item"><a className="page-link" href="#">Próximo</a></li>
-          </ul>
-        </nav>
-      </footer>
+
     </>
   );
 }

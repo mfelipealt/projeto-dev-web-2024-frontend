@@ -1,0 +1,38 @@
+.pagination {
+    display: flex; /* Alinha os botões horizontalmente */
+    justify-content: center; /* Centraliza a paginação */
+    list-style: none; /* Remove os marcadores de lista */
+    padding: 0;
+  }
+  
+  .pagination li {
+    margin: 0 5px; /* Espaçamento entre os botões */
+  }
+  
+  .pagination a {
+    padding: 8px 16px; /* Tamanho dos botões */
+    border: 1px solid #007bff; /* Borda azul */
+    background-color: #fff; /* Fundo branco */
+    color: #007bff; /* Cor do texto azul */
+    text-decoration: none; /* Remove sublinhado */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer;
+    font-size: 16px; /* Tamanho da fonte */
+    transition: background-color 0.3s ease; /* Transição suave */
+  }
+  
+  .pagination a:hover {
+    background-color: #007bff; /* Fundo azul ao passar o mouse */
+    color: #fff; /* Cor do texto branco ao passar o mouse */
+  }
+  
+  .pagination a.active {
+    background-color: #007bff; /* Fundo azul para a página ativa */
+    color: #fff; /* Cor do texto branco para a página ativa */
+  }
+  
+  .pagination a.disabled {
+    color: #ccc; /* Cor de texto cinza para botões desabilitados */
+    cursor: default;
+    pointer-events: none; /* Impede cliques em botões desabilitados */
+  }
