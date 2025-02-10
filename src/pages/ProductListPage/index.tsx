@@ -2,22 +2,22 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import ProductService from "@/service/ProductService";
 import { IProduct } from "@/commons/interface";
-import { Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Image, Stack, Text, useToast } from "@chakra-ui/react"; // Import useToast
-import logo from "@/assets/utfpr-logo.png";
+import { ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ReactPaginate from 'react-paginate';
-import './index.css'; 
+import './index.css';
+import { AddToCartButton } from "@/components/AddToCartButton";
+import { BuyButton } from "@/components/BuyButton";
 
 export function ProductListPage() {
   const [data, setData] = useState<IProduct[]>([]);
   const [apiError, setApiError] = useState("");
   const { findAll, addToCart } = ProductService;
-  const toast = useToast();
-  const [currentPage, setCurrentPage] = useState(0); // Começa em 0 para react-paginate
+  const [currentPage, setCurrentPage] = useState(0);
   const categoriesPerPage = 2;
 
   useEffect(() => {
@@ -78,49 +78,41 @@ export function ProductListPage() {
     );
   }
 
-  const groupedProducts = data.reduce((acc, product) => {
-    const categoryId = product.category.id;
-    if (!acc[categoryId]) {
-      acc[categoryId] = [];
+  const groupedProducts = data.reduce((acc: Record<number, IProduct[]>, product) => {
+    const categoryId = product.category?.id;
+
+    if (categoryId !== undefined) {
+      if (!acc[categoryId]) {
+        acc[categoryId] = [];
+      }
+      acc[categoryId].push(product);
     }
-    acc[categoryId].push(product);
     return acc;
   }, {});
-
-  const handleAddToCart = (product) => {
-    addToCart(product);
-    toast({
-      title: "Produto adicionado com sucesso ao carrinho",
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-      position: "bottom-center"
-    });
-  };
 
   const categoryKeys = Object.keys(groupedProducts);
   const pageCount = Math.ceil(categoryKeys.length / categoriesPerPage);
 
   const handlePageClick = (event) => {
-      setCurrentPage(event.selected);
+    setCurrentPage(event.selected);
   };
 
   const offset = currentPage * categoriesPerPage;
   const currentPageCategories = categoryKeys.slice(offset, offset + categoriesPerPage);
 
-  
+
   return (
     <>
-        <main className="container">
-            {currentPageCategories.map((categoryId) => ( // Mapeia currentPageCategories
-                <div key={categoryId}>
-                    <Heading size='lg' mb={5}>
-                        {groupedProducts[categoryId][0].category.name}
-                    </Heading>
-                    <Slider {...settings}>
-                        {groupedProducts[categoryId].map((product: IProduct) => (
-                            <div key={product.id}>
-                                <Card borderRadius='lg' mx={4} mb={4} borderWidth={0.5}>
+      <main className="container">
+        {currentPageCategories.map((categoryId) => (
+          <div key={categoryId}>
+            <Heading size='lg' mb={5}>
+              {groupedProducts[Number(categoryId)][0].category.name}
+            </Heading>
+            <Slider {...settings}>
+              {groupedProducts[Number(categoryId)].map((product: IProduct) => (
+                <div key={product.id}>
+                  <Card borderRadius='lg' mx={4} mb={4}>
                     <CardBody>
                       <NavLink
                         to={`/product/${product.id}`}
@@ -146,12 +138,8 @@ export function ProductListPage() {
                     <Divider color='blue.600' />
                     <CardFooter>
                       <ButtonGroup spacing='2'>
-                        <Button variant='solid' colorScheme='blue'>
-                          Comprar
-                        </Button>
-                        <Button variant='ghost' colorScheme='blue' onClick={() => handleAddToCart(product)}> {/* Chame a nova função */}
-                          + Carrinho
-                        </Button>
+                        <BuyButton product={product} />
+                        <AddToCartButton product={product} />
                       </ButtonGroup>
                     </CardFooter>
                   </Card>
@@ -161,15 +149,15 @@ export function ProductListPage() {
           </div>
         ))}
         <ReactPaginate
-                    previousLabel="Anterior"
-                    nextLabel="Próximo"
-                    pageCount={pageCount}
-                    onPageChange={handlePageClick}
-                    containerClassName="pagination"
-                    activeClassName="active"
-                    marginPagesDisplayed={2} // Número de páginas exibidas nas bordas
-                    pageRangeDisplayed={5}    // Número de páginas exibidas no centro
-                />
+          previousLabel="Anterior"
+          nextLabel="Próximo"
+          pageCount={pageCount}
+          onPageChange={handlePageClick}
+          containerClassName="pagination"
+          activeClassName="active"
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+        />
       </main>
 
     </>

@@ -56,7 +56,6 @@ const findByCategory = async (categoryId: number): Promise<any> => {
 const addToCart = (product: IProduct) => {
   let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-  // Verifica se o produto já está no carrinho
   const existingProduct = cart.find((item: any) => item.id === product.id);
 
   if (existingProduct) {

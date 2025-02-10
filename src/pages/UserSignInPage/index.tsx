@@ -96,7 +96,7 @@ export function UserSignInPage() {
                             <button className="btn btn-primary mb-2" onClick={onClickLogin}>Login</button>
                         </div>
                         <div className="container text-center mb-2">
-                            <Link to="/cadastrar">Cadastrar-se</Link>
+                            <Link to="/cadastrar" color="white">Cadastrar-se</Link>
                         </div>
                     </div>
                 </div>

@@ -4,7 +4,7 @@ import { api } from "@/lib/axios";
 const shoppingCartURL = "/shopping-cart";
 
 const finalizePurchase = async (cartItems: ICartItem[]): Promise<any> => {
-  const dateTime = new Date().toISOString(); // Data e hora atual em formato ISO 8601
+  const dateTime = new Date().toISOString(); 
   const payment = "APPROVED";
   const totalPurchase = 0.0; 
 

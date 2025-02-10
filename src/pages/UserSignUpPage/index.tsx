@@ -177,7 +177,7 @@ export function UserSignupPage() {
                             </button>
                         </div>
                         <div className="text-center">
-                            <Link to="/login">Login</Link>
+                            <Link to="/login" color="white">Login</Link>
                         </div>
                     </div>
                 </div>

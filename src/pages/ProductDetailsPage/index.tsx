@@ -34,7 +34,7 @@ export function ProductDetails() {
         {data ? (
           <Box className="product-card-container" p={5}>
             <ProductCardBuy
-              image={data.imageName} // URL dinâmica
+              image={data.imageName} 
               title={data.name}
               description={data.description}
               price={data.price}

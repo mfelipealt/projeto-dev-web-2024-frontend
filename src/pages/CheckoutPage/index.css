@@ -1,6 +1,6 @@
 .selected-address {
-    border-color: blue.500; /* Ou a cor que você preferir */
-    box-shadow: 0 0 5px blue; /* Adiciona uma sombra azul */
+    border-color: blue.500;
+    box-shadow: 0 0 5px blue;
 };
 
 .boxStyle { 

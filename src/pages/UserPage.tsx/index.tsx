@@ -1,34 +1,23 @@
 import {
     Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon,
-    Box, Flex, Image, Stack, Text, Button, Divider, Tabs, TabList, TabPanels, Tab, TabPanel, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader,
-    ModalCloseButton, ModalBody, ModalFooter, Input, FormControl, FormLabel, useToast, Spinner,
+    Box, Flex, Image, Text, Button, Tabs, TabList, TabPanels, Tab, TabPanel, useDisclosure,
+    Input, FormControl, FormLabel, useToast, Spinner,
     InputGroup, InputRightElement,
     AlertDialog, AlertDialogContent, AlertDialogOverlay, AlertDialogHeader, AlertDialogBody, AlertDialogFooter,
-    Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, IconButton, DrawerFooter,
-    Table,
-    Thead,
-    Tbody,
-    Tr,
-    Th,
-    Td,
-    TableContainer,
+
 } from "@chakra-ui/react";
 import PersonIcon from "@mui/icons-material/Person";
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import { useState, useEffect, useRef } from "react";
 import AuthService from "@/service/AuthService";
 import { useNavigate } from "react-router-dom";
-import AddressService from "@/service/AddressService"; // Importe o serviço de endereço
-import { IAddress, ICartItem, IShoppingCart, IShoppingCartProduct } from "@/commons/interface";
+import AddressService from "@/service/AddressService";
+import { IAddress, IShoppingCart } from "@/commons/interface";
 import "../UserPage.tsx/index.css";
 import ShoppingCartService from "@/service/ShoppingCartService";
 import "../UserPage.tsx/index.css";
-import ProductService from "@/service/ProductService"; // Importe o serviço de produtos
-import logo from "@/assets/utfpr-logo.png";
-import { ProductDetails } from "../ProductDetailsPage";
+import ProductService from "@/service/ProductService";
 
 export function UserPage() {
     const navigate = useNavigate();
@@ -77,7 +66,7 @@ export function UserPage() {
     };
 
     useEffect(() => {
-        if (user) { // Garante que fetchOrders só seja chamado se o usuário estiver carregado
+        if (user) {
             fetchOrders();
         }
     }, [user]);
@@ -88,11 +77,10 @@ export function UserPage() {
             const fetchedOrders = await ShoppingCartService.getOrders();
             setOrders(fetchedOrders);
 
-            // Busca os detalhes de cada produto *antes* de renderizar
             const productDetailPromises = fetchedOrders.flatMap(order =>
                 order.shoppingCartProducts.map(async (shoppingCartProduct) => {
                     const details = await ProductService.findOne(shoppingCartProduct.productId);
-                    return { [shoppingCartProduct.productId]: details.data }; // Armazena os detalhes pelo ID do produto
+                    return { [shoppingCartProduct.productId]: details.data };
                 })
             );
 
@@ -101,7 +89,15 @@ export function UserPage() {
             setProductDetails(detailsMap);
 
         } catch (error) {
-            // ... tratamento de erro ...
+            console.error("Erro ao buscar pedidos:", error);
+            toast({
+                title: "Erro ao buscar pedidos",
+                description: "Tente novamente mais tarde.",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom",
+            });
         } finally {
             setIsLoadingOrders(false);
         }
@@ -138,7 +134,7 @@ export function UserPage() {
             toast({ title: "Erro ao adicionar endereço", description: "Tente novamente.", status: "error", duration: 5000, isClosable: true });
         }
     };
-    
+
     if (isLoading) {
         return <Spinner />;
     }
@@ -288,7 +284,7 @@ export function UserPage() {
                                         <Text className="truncate"><strong>Estado:</strong> {address.state}</Text>
                                         <Text className="truncate"><strong>CEP:</strong> {address.cep}</Text>
                                     </Box>
-                                    <Box mt={3}> {/* Added a Box to group the buttons */}
+                                    <Box mt={3}>
                                         <Button leftIcon={<DeleteForeverIcon />} size="sm" mr={2} aria-label="Remover endereço" colorScheme="red" onClick={() => handleDeleteAddress(address)}>
                                             Remover
                                         </Button>
@@ -430,23 +426,43 @@ export function UserPage() {
                                             </AccordionButton>
                                         </h2>
                                         <AccordionPanel pb={4}>
-                                        {order.shoppingCartProducts.map((shoppingCartProduct) => {
-                                            const details = productDetails[shoppingCartProduct.productId];
-                                            if (!details) return null;
+                                            <Flex direction="row" gap={4} wrap="wrap">
+                                                {order.shoppingCartProducts.map((shoppingCartProduct) => {
+                                                    const details = productDetails[shoppingCartProduct.productId];
+                                                    if (!details) return null;
 
-                                            return (
-                                                <Box key={shoppingCartProduct.productId} borderWidth="1px" borderRadius="md" p={3} mb={2}>
-                                                    <Image src={details.imageName} alt="Imagem do produto" boxSize="150px" />
-                                                    <Text><strong>Produto ID:</strong> {shoppingCartProduct.productId}</Text>
-                                                    <Text><strong>Nome:</strong> {details.name}</Text>
-                                                    <Text><strong>Descrição:</strong> {details.description}</Text>
-                                                    <Text><strong>Categoria:</strong> {details.category?.name}</Text>
-                                                    <Text><strong>Quantidade:</strong> {shoppingCartProduct.quantity}</Text>
-                                                    <Text><strong>Preço Final:</strong> {shoppingCartProduct.finalPrice}</Text>
-                                                </Box>
-                                            );
-                                        })}
-                                    </AccordionPanel>
+                                                    return (
+                                                        <Flex key={shoppingCartProduct.productId} borderWidth="1px"
+                                                            borderRadius="md"
+                                                            p={3}
+                                                            mb={2}
+                                                            width="fit-content"
+                                                            minWidth="435px"
+                                                            maxWidth="435px"
+                                                            display="flex"
+                                                            justifyContent="center"
+                                                            alignItems="center"
+                                                            cursor="pointer">
+                                                            <Box flex="1" display="flex" justifyContent="center" alignItems="center">
+                                                                <Image src={details.imageName} alt="Imagem do produto" boxSize="150px" />
+                                                            </Box>
+                                                            <Box flex="2" mt={3}>
+                                                                <Text><strong>Produto ID:</strong> {shoppingCartProduct.productId}</Text>
+                                                                <Text><strong>Nome:</strong> {details.name}</Text>
+                                                                <Text><strong>Descrição:</strong> {details.description}</Text>
+                                                                <Text><strong>Categoria:</strong> {details.category?.name}</Text>
+                                                                <Text><strong>Quantidade:</strong> {shoppingCartProduct.quantity}</Text>
+                                                                <Text><strong>Preço Final:</strong> {shoppingCartProduct.finalPrice}</Text>
+                                                            </Box>
+
+
+                                                        </Flex>
+                                                    );
+
+
+                                                })}
+                                            </Flex>
+                                        </AccordionPanel>
                                     </AccordionItem>
                                 ))}
                             </Accordion>

@@ -27,8 +27,8 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () =
   const toast = useToast();
   const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
-  const [productDetails, setProductDetails] = useState<Record<number, IProduct>>({}); // Use IProduct aqui
-  const { findOne } = ProductService; // Supondo que você tenha um método findOne no seu serviço
+  const [productDetails, setProductDetails] = useState<Record<number, IProduct>>({}); 
+  const { findOne } = ProductService; 
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -37,7 +37,7 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () =
 
   useEffect(() => {
     const fetchProductDetails = async () => {
-      const details: Record<number, IProduct> = {}; // Tipo definido aqui
+      const details: Record<number, IProduct> = {}; 
       for (const item of cartItems) {
         try {
           const product = await findOne(item.id);
@@ -65,7 +65,7 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () =
   };
 
   const updateQuantity = (id: number, newQuantity: number) => {
-    if (newQuantity < 1) return; // Impede que a quantidade seja menor que 1
+    if (newQuantity < 1) return;  
     const updatedCart = cartItems.map(item =>
       item.id === id ? { ...item, quantity: newQuantity } : item
     );
@@ -108,7 +108,7 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () =
       isClosable: true,
       position: "bottom"
     });
-    onAlertClose(); // Fecha o AlertDialog após a confirmação
+    onAlertClose(); 
   };
 
   return (
@@ -123,13 +123,13 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () =
           ) : (
             <Stack spacing={3}>
               {cartItems.map((item) => {
-                const product = productDetails[item.id]; // Agora é do tipo IProduct
+                const product = productDetails[item.id]; 
 
                 return (
                   <Box key={item.id} p={3} borderWidth="1px" borderRadius="md">
                     <Flex align="center">
                       <Image
-                        src={product?.imageName ? product.imageName : logo} // Use product.imageName
+                        src={product?.imageName ? product.imageName : logo} 
                         boxSize="50px"
                         mr={3}
                         alt={item.name}

@@ -26,6 +26,8 @@ export function CheckoutPage() {
   const [isFetchingCEP, setIsFetchingCEP] = useState(false);
   const [productDetails, setProductDetails] = useState<Record<number, IProduct>>({});
   const { findOne } = ProductService;
+  const totalSemDesconto = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotalComDesconto = cartItems.reduce((acc, item) => acc + (item.price - (item.price * item.discount)) * item.quantity, 0);
 
   const [newAddress, setNewAddress] = useState<IAddress>({
     street: "",
@@ -42,11 +44,9 @@ export function CheckoutPage() {
     const loadData = async () => {
       setIsLoading(true);
 
-      // 1. Carregar dados do carrinho
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
       setCartItems(cart);
 
-      // 2. Carregar dados do usuário (e endereço)
       if (AuthService.isAuthenticated()) {
         const userData = await AuthService.getCurrentUser();
         if (userData) {
@@ -57,14 +57,13 @@ export function CheckoutPage() {
         }
       } else {
         navigate("/login", { state: { from: "/checkout" } });
-        setIsLoading(false); // Importante: setIsLoading deve ser chamado aqui também
-        return; // Sai do useEffect para evitar erros
+        setIsLoading(false);
+        return;
       }
 
-      // 3. Carregar detalhes dos produtos (NOVO!)
       const fetchProductDetails = async () => {
         const details: Record<number, IProduct> = {};
-        for (const item of cart) { // Use a variável 'cart' aqui
+        for (const item of cart) {
           try {
             const product = await findOne(item.id);
             if (product && product.data) {
@@ -79,7 +78,7 @@ export function CheckoutPage() {
         setProductDetails(details);
       };
 
-      if (cart.length > 0) { // Garante que fetchProductDetails só seja chamada se cart não estiver vazio
+      if (cart.length > 0) {
         fetchProductDetails();
       }
 
@@ -90,7 +89,7 @@ export function CheckoutPage() {
   }, []);
 
   const handleFinalize = async () => {
-    if (!address) { // Verifica se o endereço está definido
+    if (!address) {
       toast({
         title: "Cadastre ao menos um endereço para continuar.",
         status: "error",
@@ -98,14 +97,20 @@ export function CheckoutPage() {
         isClosable: true,
         position: "bottom"
       });
-      return; // Impede a finalização da compra
+      return;
     }
 
     try {
       const response = await finalizePurchase(cartItems);
       if (response.status === 201) {
         localStorage.removeItem("cart");
-        alert("Compra finalizada com sucesso!");
+        toast({
+          title: "Compra finalizada com sucesso!",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "bottom"
+        });
         navigate("/home");
       } else {
         console.error("Erro na requisição:", response);
@@ -118,7 +123,7 @@ export function CheckoutPage() {
     }
   };
 
-  const handleAddressClick = (addressItem: IAddress) => { // Tipagem do parâmetro addressItem
+  const handleAddressClick = (addressItem: IAddress) => {
     setAddress(addressItem);
   };
 
@@ -216,7 +221,7 @@ export function CheckoutPage() {
   };
 
   const updateQuantity = (id: number, newQuantity: number) => {
-    if (newQuantity < 1) return; // Impede que a quantidade seja menor que 1
+    if (newQuantity < 1) return;
     const updatedCart = cartItems.map(item =>
       item.id === id ? { ...item, quantity: newQuantity } : item
     );
@@ -238,7 +243,6 @@ export function CheckoutPage() {
         Finalizar Compra
       </Text>
 
-      {/* Confirmação de Endereço (exibe mesmo se address for null) */}
       <Box borderWidth="1px" borderRadius="md" p={4} mb={4}>
         <Text fontWeight="bold">Endereço de Entrega:</Text>
         <Flex direction="row" gap={4} wrap="wrap">
@@ -283,12 +287,11 @@ export function CheckoutPage() {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            onClick={onOpen} // Abre o modal ao clicar
+            onClick={onOpen}
           >
             <Icon as={AddBoxIcon} w={6} h={6} mr={2} />
             <Text mt={3}>Adicionar Endereço</Text>
           </Box>
-          {/* Modal para adicionar endereço */}
           <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
@@ -312,7 +315,6 @@ export function CheckoutPage() {
                         </InputRightElement>
                       </InputGroup>
                     </FormControl>
-                    {/* ... other form controls (Rua, Número, Complemento, Bairro, Cidade, Estado) */}
                     <FormControl px="2" mt={3}>
                       <FormLabel>Rua</FormLabel>
                       <Input
@@ -378,7 +380,6 @@ export function CheckoutPage() {
         </Flex>
       </Box>
 
-      {/* Itens Comprados (exibe mesmo se address for null) */}
       <Box borderWidth="1px" borderRadius="md" p={4} mb={4}>
         <Text fontWeight="bold">Itens Comprados:</Text>
         <Flex direction="row" gap={4} wrap="wrap">
@@ -395,7 +396,7 @@ export function CheckoutPage() {
                 justifyContent="center"
                 alignItems="center"
                 cursor="pointer">
-                <Box flex="1" display="flex" justifyContent="center" alignItems="center"> {/* Centraliza a imagem */}
+                <Box flex="1" display="flex" justifyContent="center" alignItems="center">
                   <Image
                     src={product?.imageName ? product.imageName : logo}
                     boxSize="50px"
@@ -442,7 +443,11 @@ export function CheckoutPage() {
           })}
         </Flex>
       </Box>
-
+      <Box borderWidth="1px" borderRadius="md" p={4} mb={3}>
+        <Text fontWeight="bold">Resumo dos valores:</Text>
+        <Text fontWeight="bold" width="full" as="s">Total sem desconto: R$ {totalSemDesconto.toFixed(2)}</Text>
+        <Text fontWeight="bold" width="full" color="green.500" >Subtotal com desconto: R$ {subtotalComDesconto.toFixed(2)}</Text>
+      </Box>
       <Button colorScheme="blue" width="full" onClick={handleFinalize} disabled={cartItems.length === 0}>
         Finalizar Compra
       </Button>
