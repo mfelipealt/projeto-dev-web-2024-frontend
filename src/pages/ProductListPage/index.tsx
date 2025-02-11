@@ -12,6 +12,7 @@ import ReactPaginate from 'react-paginate';
 import './index.css';
 import { AddToCartButton } from "@/components/AddToCartButton";
 import { BuyButton } from "@/components/BuyButton";
+import ProductCard from "@/components/ProductCard";
 
 export function ProductListPage() {
   const [data, setData] = useState<IProduct[]>([]);
@@ -110,41 +111,11 @@ export function ProductListPage() {
               {groupedProducts[Number(categoryId)][0].category.name}
             </Heading>
             <Slider {...settings}>
-              {groupedProducts[Number(categoryId)].map((product: IProduct) => (
-                <div key={product.id}>
-                  <Card borderRadius='lg' mx={4} mb={4}>
-                    <CardBody>
-                      <NavLink
-                        to={`/product/${product.id}`}
-                        className={(navData) =>
-                          navData.isActive ? "nav-link text-white" : "nav-link text-white"
-                        }
-                      >
-                        <Image
-                          src={product.imageName}
-                          alt='Product Image'
-                        />
-                        <Stack mt='2' className="justify-content-center" color='blue.900'>
-                          <Heading size='md'>{product.name}</Heading>
-                        </Stack>
-                        <Text className="risk" color='grey' textDecorationLine="line-through">
-                          De: R${product.price.toFixed(2)}
-                        </Text>
-                        <Text color='blue.600' fontSize='2xl'>
-                          Por: R${(product.price - (product.price * product.discount)).toFixed(2)}
-                        </Text>
-                      </NavLink>
-                    </CardBody>
-                    <Divider color='blue.600' />
-                    <CardFooter>
-                      <ButtonGroup spacing='2'>
-                        <BuyButton product={product} />
-                        <AddToCartButton product={product} />
-                      </ButtonGroup>
-                    </CardFooter>
-                  </Card>
-                </div>
-              ))}
+            {groupedProducts[Number(categoryId)].map((product: IProduct) => (
+                                <div key={product.id}>
+                                    <ProductCard product={product} /> {/* Usa o componente aqui */}
+                                </div>
+                            ))}
             </Slider>
           </div>
         ))}

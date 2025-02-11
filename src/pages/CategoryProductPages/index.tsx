@@ -8,13 +8,14 @@ import { IProduct } from "@/commons/interface";
 import { AddToCartButton } from "@/components/AddToCartButton";
 import { BuyButton } from "@/components/BuyButton";
 import ReactPaginate from "react-paginate";
+import ProductCard from "@/components/ProductCard";
 
 export function CategoryProductsPage() {
     const { categoryId } = useParams<{ categoryId: string }>();
     const [products, setProducts] = useState<IProduct[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [currentItems, setCurrentItems] = useState<IProduct[]>([]);
-    const itemsPerPage = 6;
+    const itemsPerPage = 5;
 
     useEffect(() => {
         loadData();
@@ -43,39 +44,9 @@ export function CategoryProductsPage() {
     return (
         <main className="container-fluid vh-100">
             <SimpleGrid p={10} spacing={10} minChildWidth="250px">
-                {currentItems.map((product: IProduct) => ( // Use currentItems aqui
+                {currentItems.map((product: IProduct) => ( 
                     <div key={product.id}>
-                        <Card borderRadius='lg'>
-                            <CardBody>
-                                <NavLink
-                                    to={`/product/${product.id}`}
-                                    className={(navData) =>
-                                        navData.isActive ? "nav-link text-white" : "nav-link text-white"
-                                    }
-                                >
-                                    <Image
-                                        src={product.imageName}
-                                        alt='Product Image'
-                                    />
-                                    <Stack mt='2' className="justify-content-center align-items-center">
-                                        <Heading size='md'>{product.name}</Heading>
-                                    </Stack>
-                                    <Text className="risk" color='grey' textDecorationLine="line-through">
-                                        De: R${product.price.toFixed(2)}
-                                    </Text>
-                                    <Text color='blue.600' fontSize='2xl'>
-                                        Por: R${(product.price - (product.price * product.discount)).toFixed(2)}
-                                    </Text>
-                                </NavLink>
-                            </CardBody>
-                            <Divider color='blue.600' />
-                            <CardFooter>
-                                <ButtonGroup spacing='2'>
-                                    <BuyButton product={product} />
-                                    <AddToCartButton product={product} />
-                                </ButtonGroup>
-                            </CardFooter>
-                        </Card>
+                        <ProductCard product={product} />
                     </div>
                 ))}
             </SimpleGrid>

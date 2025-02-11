@@ -12,6 +12,7 @@ import ProductService from "@/service/ProductService";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import ProductShoppingCart from "@/components/ProductShoppingCart";
 
 export function CheckoutPage() {
   const [user, setUser] = useState<any>(null);
@@ -390,63 +391,17 @@ export function CheckoutPage() {
       <Box borderWidth="1px" borderRadius="md" p={4} mb={4}>
         <Text fontWeight="bold">Itens Comprados:</Text>
         <Flex direction="row" gap={4} wrap="wrap">
-          {cartItems.map((item) => {
-            const product = productDetails[item.id];
-
-            return (
-              <Flex key={item.id} borderWidth="1px"
-                borderRadius="md"
-                width="fit-content"
-                minWidth="435px"
-                maxWidth="435px"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                cursor="pointer">
-                <Box flex="1" display="flex" justifyContent="center" alignItems="center">
-                  <Image
-                    src={product?.imageName ? product.imageName : logo}
-                    boxSize="50px"
-                    alt={item.name}
+        {cartItems.map((item) => {
+                const product = productDetails[item.id];
+                return (
+                  <ProductShoppingCart
+                    key={item.id}
+                    item={item}
+                    product={product}
+                    updateQuantity={updateQuantity}
+                    removeFromCart={removeFromCart}
                   />
-                </Box>
-                <Box flex="2" mt={3}>
-                  <Text fontWeight="bold">{item.name}</Text>
-                  <Text color="gray.500" textDecoration="line-through">
-                    Valor: R$ {item.price.toFixed(2)}
-                  </Text>
-                  <Text>
-                    Valor c/ desc: R${(item.price - item.price * item.discount).toFixed(2)}
-                  </Text>
-                  <Text fontWeight="bold">
-                    Total: R${((item.price - item.price * item.discount) * item.quantity).toFixed(2)}
-                  </Text>
-                </Box>
-
-                <Flex flex="1" align="center" mr={3}>
-                  <IconButton
-                    icon={<RemoveIcon />}
-                    aria-label="Decrementar"
-                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                    isDisabled={item.quantity <= 1}
-                  />
-                  <Text mx={2} mt={3}>{item.quantity}</Text>
-                  <IconButton
-                    icon={<AddIcon />}
-                    aria-label="Incrementar"
-                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                  />
-                  <IconButton
-                    icon={<DeleteForeverIcon />}
-                    aria-label="Remover item"
-                    style={{ color: "red" }}
-                    ml={3}
-                    onClick={() => removeFromCart(item.id)}
-                  />
-                </Flex>
-
-              </Flex>
-            );
+                );
           })}
         </Flex>
       </Box>
