@@ -39,6 +39,7 @@ export function ProductDetails() {
               description={data.description}
               price={data.price}
               discount={data.discount}
+              product={data}
             />
           </Box>
         ) : (

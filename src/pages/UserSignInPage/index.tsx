@@ -45,7 +45,7 @@ export function UserSignInPage() {
                 window.location.reload();
             }
             else {
-                navigate("/home");
+                navigate("/products");
                 window.location.reload();
             }
         } else {

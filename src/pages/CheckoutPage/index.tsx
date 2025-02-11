@@ -89,6 +89,13 @@ export function CheckoutPage() {
   }, []);
 
   const handleFinalize = async () => {
+
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    if(!cart){
+      setCartItems(cart);
+    }
+
     if (!address) {
       toast({
         title: "Cadastre ao menos um endereço para continuar.",
@@ -106,12 +113,12 @@ export function CheckoutPage() {
         localStorage.removeItem("cart");
         toast({
           title: "Compra finalizada com sucesso!",
-          status: "error",
+          status: "success",
           duration: 3000,
           isClosable: true,
           position: "bottom"
         });
-        navigate("/home");
+        navigate("/products");
       } else {
         console.error("Erro na requisição:", response);
         const errorMessage = response?.data?.message || "Erro ao finalizar a compra. Tente novamente.";

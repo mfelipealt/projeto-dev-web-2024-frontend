@@ -53,12 +53,7 @@ export function NavBar() {
           </p>
         </div>
         <div className="col-4">
-          <ul className="navbar-nav justify-content-center align-items-center">
-            <li>
-              <NavLink to="/" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link text-white")} style={{ color: "grey" }}>
-                Home
-              </NavLink>
-            </li>
+          <ul className="navbar-nav justify-content-center align-items-center">           
             <li>
               <NavLink to="/categories" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link text-white")} style={{ color: "grey" }}>
                 Categorias
