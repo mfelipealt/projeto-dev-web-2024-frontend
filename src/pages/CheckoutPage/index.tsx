@@ -104,8 +104,8 @@ export function CheckoutPage() {
     }
 
     if (JSON.stringify(cart) !== JSON.stringify(cartItems)) {
-      setCartItems(cartItems);
-      localStorage.setItem("cart", JSON.stringify(cartItems));
+      setCartItems(cart);
+      localStorage.setItem("cart", JSON.stringify(cart));
       toast({
         title: "Carrinho atualizado!",
         description: "Os produtos do carrinho foram atualizados em outra página, verifique os itens.",
