@@ -1,4 +1,4 @@
-import { Box, Flex, Stack, Image, Text, Button, Divider } from '@chakra-ui/react';
+import { Box, Flex, Stack, Image, Text, Divider } from '@chakra-ui/react';
 import { BuyButton } from '../BuyButton';
 
 const ProductCardBuy = ({ image, title, description, price, discount, product }: any) => {

@@ -1,5 +1,5 @@
 import { Button, useToast } from "@chakra-ui/react";
-import { IProduct } from "@/commons/interface"; // Importe a interface IProduct
+import { IProduct } from "@/commons/interface"; 
 import ProductService from "@/service/ProductService";
 
 interface AddToCartButtonProps {

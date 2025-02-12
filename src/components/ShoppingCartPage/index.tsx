@@ -1,56 +1,49 @@
 import {
   Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton,
-  Button, Image, Stack, Text, Box, Flex, IconButton, useToast,
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  AlertDialogHeader,
-  AlertDialogBody,
-  AlertDialogFooter,
-  useDisclosure,
-  DrawerFooter,
+  Button, Stack, Text, Box, useToast,
+  AlertDialog, AlertDialogContent, AlertDialogOverlay, AlertDialogHeader,
+  AlertDialogBody, AlertDialogFooter, useDisclosure, DrawerFooter,
 } from "@chakra-ui/react";
-import logo from "@/assets/utfpr-logo.png";
 import { useState, useEffect, useRef } from "react";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import { useNavigate } from "react-router-dom";
 import AuthService from "@/service/AuthService";
 import { ICartItem, IProduct } from "@/commons/interface";
 import ProductService from "@/service/ProductService";
 import ProductShoppingCart from "../ProductShoppingCart";
 
-export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
+interface CartDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
+export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const [cartItems, setCartItems] = useState<ICartItem[]>([]);
+  const [productDetails, setProductDetails] = useState<Record<number, IProduct>>({});
   const navigate = useNavigate();
   const toast = useToast();
   const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
-  const [productDetails, setProductDetails] = useState<Record<number, IProduct>>({});
-  const { findOne } = ProductService;
 
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]") as ICartItem[];
     setCartItems(cart);
   }, [isOpen]);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       const details: Record<number, IProduct> = {};
-      for (const item of cartItems) {
+      const requests = cartItems.map(async (item) => {
         try {
-          const product = await findOne(item.id);
-          if (product && product.data) {
+          const product = await ProductService.findOne(item.id);
+          if (product?.data) {
             details[item.id] = product.data;
-          } else {
-            console.error("Produto não encontrado:", item.id);
           }
         } catch (error) {
-          console.error("Erro ao buscar produto:", error);
+          console.error(`Erro ao buscar produto ${item.id}:`, error);
         }
-      }
+      });
+
+      await Promise.all(requests);
       setProductDetails(details);
     };
 
@@ -75,28 +68,26 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () =
   };
 
   const totalSemDesconto = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const subtotalComDesconto = cartItems.reduce((acc, item) => acc + (item.price - (item.price * item.discount)) * item.quantity, 0);
+  const subtotalComDesconto = cartItems.reduce(
+    (acc, item) => acc + (item.price - item.price * item.discount) * item.quantity, 0
+  );
 
-  const handleFinalizePurchase = async () => {
+  const handleFinalizePurchase = () => {
     if (!AuthService.isAuthenticated()) {
       toast({
         title: "Você precisa estar logado para finalizar a compra.",
         status: "error",
         duration: 3000,
         isClosable: true,
-        position: "bottom"
+        position: "bottom",
       });
       onClose();
-      localStorage.setItem('redirectAfterLogin', '/checkout');
+      localStorage.setItem("redirectAfterLogin", "/checkout");
       navigate("/login");
       return;
     }
     onClose();
     navigate("/checkout");
-  };
-
-  const clearCart = () => {
-    onAlertOpen();
   };
 
   const confirmClearCart = () => {
@@ -107,7 +98,7 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () =
       status: "success",
       duration: 2500,
       isClosable: true,
-      position: "bottom"
+      position: "bottom",
     });
     onAlertClose();
   };
@@ -123,55 +114,43 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () =
             <Text>Carrinho vazio</Text>
           ) : (
             <Stack spacing={3}>
-              {cartItems.map((item) => {
-                const product = productDetails[item.id];
-                return (
-                  <ProductShoppingCart
-                    key={item.id}
-                    item={item}
-                    product={product}
-                    updateQuantity={updateQuantity}
-                    removeFromCart={removeFromCart}
-                  />
-                );
-              })}
+              {cartItems.map((item) => (
+                <ProductShoppingCart
+                  key={item.id}
+                  item={item}
+                  product={productDetails[item.id]}
+                  updateQuantity={updateQuantity}
+                  removeFromCart={removeFromCart}
+                />
+              ))}
             </Stack>
           )}
-
         </DrawerBody>
-        {cartItems.length > 0 ? (
+        {cartItems.length > 0 && (
           <DrawerFooter>
             <Stack spacing={3} width="full">
-
               <Box mt={4} p={3} borderWidth="1px" borderRadius="md">
-                <Text fontWeight="bold" width="full" as="s">Total sem desconto: R$ {totalSemDesconto.toFixed(2)}</Text>
-                <Text fontWeight="bold" width="full" color="green.500" >Subtotal com desconto: R$ {subtotalComDesconto.toFixed(2)}</Text>
+                <Text fontWeight="bold" as="s">
+                  Total sem desconto: R$ {totalSemDesconto.toFixed(2)}
+                </Text>
+                <Text fontWeight="bold" color="green.500">
+                  Subtotal com desconto: R$ {subtotalComDesconto.toFixed(2)}
+                </Text>
               </Box>
-              <Button
-                colorScheme="red"
-                width="full"
-                mt={1}
-                onClick={clearCart}
-              >
+              <Button colorScheme="red" width="full" mt={1} onClick={onAlertOpen}>
                 Limpar Carrinho
               </Button>
 
-              <AlertDialog
-                isOpen={isAlertOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={onAlertClose}
-              >
+              <AlertDialog isOpen={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onAlertClose}>
                 <AlertDialogOverlay>
                   <AlertDialogContent>
                     <AlertDialogHeader textAlign="center">Limpar Carrinho?</AlertDialogHeader>
                     <AlertDialogBody textAlign="center">
-                      Você tem certeza que quer Limpar o Carrinho? <br />
+                      Você tem certeza que quer limpar o carrinho? <br />
                       Essa ação irá remover todos os itens do carrinho.
                     </AlertDialogBody>
                     <AlertDialogFooter justifyContent="center">
-                      <Button mr={3} onClick={confirmClearCart}>
-                        Continuar
-                      </Button>
+                      <Button onClick={confirmClearCart}>Continuar</Button>
                       <Button colorScheme="red" ref={cancelRef} onClick={onAlertClose}>
                         Cancelar
                       </Button>
@@ -180,19 +159,12 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean, onClose: () =
                 </AlertDialogOverlay>
               </AlertDialog>
 
-
-              <Button
-                colorScheme="blue"
-                width="full"
-                mt={1}
-                mb={2}
-                onClick={handleFinalizePurchase}
-              >
+              <Button colorScheme="blue" width="full" mt={1} mb={2} onClick={handleFinalizePurchase}>
                 Finalizar Compra
               </Button>
             </Stack>
           </DrawerFooter>
-        ) : null}
+        )}
       </DrawerContent>
     </Drawer>
   );

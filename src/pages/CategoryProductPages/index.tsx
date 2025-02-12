@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import { Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Image, SimpleGrid, Stack, Text } from "@chakra-ui/react";
-import logo from "@/assets/utfpr-logo.png";
-import backgroundImage from "@/assets/categories-background.jpg";
+import { SimpleGrid, } from "@chakra-ui/react";
 import ProductService from "@/service/ProductService";
 import { IProduct } from "@/commons/interface";
-import { AddToCartButton } from "@/components/AddToCartButton";
-import { BuyButton } from "@/components/BuyButton";
 import ReactPaginate from "react-paginate";
 import ProductCard from "@/components/ProductCard";
 
@@ -34,12 +30,11 @@ export function CategoryProductsPage() {
         setCurrentItems(products.slice(offset, endOffset));
     }, [products, currentPage]);
 
-    const handlePageClick = (event) => {
+    const handlePageClick = (event: { selected: number }) => {
         setCurrentPage(event.selected);
     };
 
     const pageCount = Math.ceil(products.length / itemsPerPage);
-
 
     return (
         <main className="container-fluid vh-100">

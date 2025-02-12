@@ -6,8 +6,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { ICartItem, IProduct } from "@/commons/interface";
+import { NavLink } from "react-router-dom";
 
-// Componente para exibir um item do carrinho
 const ProductShoppingCart = ({ item, product, updateQuantity, removeFromCart }: {
     item: ICartItem;
     product: IProduct | undefined;
@@ -16,26 +16,30 @@ const ProductShoppingCart = ({ item, product, updateQuantity, removeFromCart }: 
 }) => (
     <Box key={item.id} p={3} borderWidth="1px" borderRadius="md">
         <Flex align="center">
-            <Image
-                src={product?.imageName ? product.imageName : logo}
-                boxSize="50px"
-                mr={3}
-                alt={item.name}
-            />
-            <Box flex="1">
-                <Stack spacing={1}>
-                    <Text fontWeight="bold">{item.name}</Text>
-                    <Text as="s" color="gray.500">
-                        Valor: R$ {item.price.toFixed(2)}
-                    </Text>
-                    <Text>
-                        Valor c/ desc: R$ {(item.price - item.price * item.discount).toFixed(2)}
-                    </Text>
-                    <Text fontWeight="bold">
-                        Total: R$ {((item.price - item.price * item.discount) * item.quantity).toFixed(2)}
-                    </Text>
-                </Stack>
-            </Box>
+            <NavLink to={`/product/${item.id}`} >
+                <Flex align="center">
+                    <Image
+                        src={product?.imageName ? product.imageName : logo}
+                        boxSize="50px"
+                        mr={3}
+                        alt={item.name}
+                    />
+                    <Box flex="1">
+                        <Stack spacing={1}>
+                            <Text fontWeight="bold">{item.name}</Text>
+                            <Text as="s" color="gray.500">
+                                Valor: R$ {item.price.toFixed(2)}
+                            </Text>
+                            <Text>
+                                Valor c/ desc: R$ {(item.price - item.price * item.discount).toFixed(2)}
+                            </Text>
+                            <Text fontWeight="bold">
+                                Total: R$ {((item.price - item.price * item.discount) * item.quantity).toFixed(2)}
+                            </Text>
+                        </Stack>
+                    </Box>
+                </Flex>
+            </NavLink>
             <Flex align="center" mr={3} ml={3}>
                 <IconButton
                     icon={<RemoveIcon />}

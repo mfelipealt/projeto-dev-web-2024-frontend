@@ -6,7 +6,6 @@ import "slick-carousel/slick/slick-theme.css";
 import { AddToCartButton } from "@/components/AddToCartButton";
 import { BuyButton } from "@/components/BuyButton";
 
-// Componente para exibir um produto
 const ProductCard = ({ product }: { product: IProduct }) => (
     <Card borderRadius='lg' mx={4} mb={4}>
         <CardBody>

@@ -1,7 +1,6 @@
-import { Box, Flex, Image, Stack, Text, Button, Spinner, IconButton, useToast, FormControl, FormLabel, Input, InputGroup, InputRightElement, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, Icon } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Spinner, useToast, FormControl, FormLabel, Input, InputGroup, InputRightElement, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, Icon } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import AuthService from "@/service/AuthService";
-import logo from "@/assets/utfpr-logo.png";
 import { useNavigate } from "react-router-dom";
 import ShoppingCartService from "@/service/ShoppingCartService";
 import { ICartItem, IAddress, IProduct } from "@/commons/interface";
@@ -9,9 +8,6 @@ import "./index.css";
 import AddressService from "@/service/AddressService";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ProductService from "@/service/ProductService";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import ProductShoppingCart from "@/components/ProductShoppingCart";
 
 export function CheckoutPage() {
@@ -93,9 +89,20 @@ export function CheckoutPage() {
 
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-    if(!cart){
-      setCartItems(cart);
-    }
+    if (cart.length === 0) { 
+      localStorage.removeItem("cart"); 
+      setCartItems([]); 
+      toast({
+          title: "Carrinho vazio!",
+          description: "Adicione produtos ao carrinho para finalizar a compra.",
+          status: "info",
+          duration: 3000,
+          isClosable: true,
+          position: "bottom"
+      });
+      return; 
+  }
+
 
     if (!address) {
       toast({
@@ -109,17 +116,18 @@ export function CheckoutPage() {
     }
 
     try {
-      const response = await finalizePurchase(cartItems);
+      const response = await finalizePurchase(cartItems); 
       if (response.status === 201) {
-        localStorage.removeItem("cart");
-        toast({
-          title: "Compra finalizada com sucesso!",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-          position: "bottom"
-        });
-        navigate("/products");
+          localStorage.removeItem("cart");
+          setCartItems([]); 
+          toast({
+              title: "Compra finalizada com sucesso!",
+              status: "success",
+              duration: 3000,
+              isClosable: true,
+              position: "bottom"
+          });
+          navigate("/products");
       } else {
         console.error("Erro na requisição:", response);
         const errorMessage = response?.data?.message || "Erro ao finalizar a compra. Tente novamente.";
@@ -254,7 +262,7 @@ export function CheckoutPage() {
       <Box borderWidth="1px" borderRadius="md" p={4} mb={4}>
         <Text fontWeight="bold">Endereço de Entrega:</Text>
         <Flex direction="row" gap={4} wrap="wrap">
-          {user && user.addresses && user.addresses.length > 0 ? (
+          {user?.addresses?.length > 0 &&
             user.addresses.map((addressItem: IAddress, index: number) => (
               <Box
                 key={index}
@@ -281,9 +289,7 @@ export function CheckoutPage() {
                 </Flex>
               </Box>
             ))
-          ) : (
-            <Text></Text>
-          )}
+          }
           <Box
             borderWidth="1px"
             borderRadius="md"
@@ -391,17 +397,17 @@ export function CheckoutPage() {
       <Box borderWidth="1px" borderRadius="md" p={4} mb={4}>
         <Text fontWeight="bold">Itens Comprados:</Text>
         <Flex direction="row" gap={4} wrap="wrap">
-        {cartItems.map((item) => {
-                const product = productDetails[item.id];
-                return (
-                  <ProductShoppingCart
-                    key={item.id}
-                    item={item}
-                    product={product}
-                    updateQuantity={updateQuantity}
-                    removeFromCart={removeFromCart}
-                  />
-                );
+          {cartItems.map((item) => {
+            const product = productDetails[item.id];
+            return (
+              <ProductShoppingCart
+                key={item.id}
+                item={item}
+                product={product}
+                updateQuantity={updateQuantity}
+                removeFromCart={removeFromCart}
+              />
+            );
           })}
         </Flex>
       </Box>

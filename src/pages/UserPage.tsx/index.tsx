@@ -426,6 +426,11 @@ export function UserPage() {
                                             </AccordionButton>
                                         </h2>
                                         <AccordionPanel pb={4}>
+                                            <Flex direction="column" mb={2} borderWidth="1px" borderRadius="md" p={3}>
+                                                <Text fontWeight="bold">Resumo da Compra</Text>
+                                                <Text>Data do Pedido: {formatDate(order.dateTime)}</Text>
+                                                <Text>Valor Total: R$ {order.totalPurchase.toFixed(2)}</Text>
+                                            </Flex>
                                             <Flex direction="row" gap={4} wrap="wrap">
                                                 {order.shoppingCartProducts.map((shoppingCartProduct) => {
                                                     const details = productDetails[shoppingCartProduct.productId];
