@@ -89,19 +89,33 @@ export function CheckoutPage() {
 
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-    if (cart.length === 0) { 
-      localStorage.removeItem("cart"); 
-      setCartItems([]); 
+    if (cart.length === 0) {
+      localStorage.removeItem("cart");
+      setCartItems([]);
       toast({
-          title: "Carrinho vazio!",
-          description: "Adicione produtos ao carrinho para finalizar a compra.",
-          status: "info",
-          duration: 3000,
-          isClosable: true,
-          position: "bottom"
+        title: "Carrinho vazio!",
+        description: "Adicione produtos ao carrinho para finalizar a compra.",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom"
       });
-      return; 
-  }
+      return;
+    }
+
+    if (JSON.stringify(cart) !== JSON.stringify(cartItems)) {
+      setCartItems(cartItems);
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+      toast({
+        title: "Carrinho atualizado!",
+        description: "Os produtos do carrinho foram atualizados em outra página, verifique os itens.",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom"
+      });
+      return;
+    }
 
 
     if (!address) {
@@ -116,26 +130,28 @@ export function CheckoutPage() {
     }
 
     try {
-      const response = await finalizePurchase(cartItems); 
+      const response = await finalizePurchase(cartItems);
       if (response.status === 201) {
-          localStorage.removeItem("cart");
-          setCartItems([]); 
-          toast({
-              title: "Compra finalizada com sucesso!",
-              status: "success",
-              duration: 3000,
-              isClosable: true,
-              position: "bottom"
-          });
-          navigate("/products");
+        localStorage.removeItem("cart");
+        setCartItems([]);
+        toast({
+          title: "Compra finalizada com sucesso!",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "bottom"
+        });
+        navigate("/products");
       } else {
         console.error("Erro na requisição:", response);
         const errorMessage = response?.data?.message || "Erro ao finalizar a compra. Tente novamente.";
         alert(errorMessage);
+        console.log("Erro 1");
       }
     } catch (error) {
       console.error("Erro na requisição:", error);
       alert("Ocorreu um erro ao finalizar a compra. Tente novamente mais tarde.");
+      console.log("Erro 2");
     }
   };
 
