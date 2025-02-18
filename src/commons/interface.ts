@@ -51,6 +51,7 @@ export interface IShoppingCart {
     dateTime: string;
     payment: string;
     totalPurchase: number;
+    address: IAddress;
     shoppingCartProducts: IShoppingCartProduct[];
 }
 

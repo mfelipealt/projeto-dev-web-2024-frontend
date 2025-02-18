@@ -40,7 +40,7 @@ export function CheckoutPage() {
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
-
+      console.log(user);
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
       setCartItems(cart);
 
@@ -130,7 +130,7 @@ export function CheckoutPage() {
     }
 
     try {
-      const response = await finalizePurchase(cartItems);
+      const response = await finalizePurchase(cartItems, address);
       if (response.status === 201) {
         localStorage.removeItem("cart");
         setCartItems([]);
@@ -146,12 +146,10 @@ export function CheckoutPage() {
         console.error("Erro na requisição:", response);
         const errorMessage = response?.data?.message || "Erro ao finalizar a compra. Tente novamente.";
         alert(errorMessage);
-        console.log("Erro 1");
       }
     } catch (error) {
       console.error("Erro na requisição:", error);
       alert("Ocorreu um erro ao finalizar a compra. Tente novamente mais tarde.");
-      console.log("Erro 2");
     }
   };
 

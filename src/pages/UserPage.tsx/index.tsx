@@ -254,9 +254,7 @@ export function UserPage() {
                         <Text><strong>Data de Nascimento:</strong>  {formatDate(user.birthDate)}</Text>
                         <Text><strong>Gênero:</strong> {user.gender}</Text>
                     </Box>
-                    <Button leftIcon={<EditNoteIcon />} size="sm">
-                        Editar
-                    </Button>
+                    <Box></Box>
                 </Flex>
             </Box>
 
@@ -288,9 +286,7 @@ export function UserPage() {
                                         <Button leftIcon={<DeleteForeverIcon />} size="sm" mr={2} aria-label="Remover endereço" colorScheme="red" onClick={() => handleDeleteAddress(address)}>
                                             Remover
                                         </Button>
-                                        <Button leftIcon={<EditNoteIcon />} size="sm" mr={2}>
-                                            Editar
-                                        </Button>
+
                                         <AlertDialog
                                             isOpen={isDeleteAlertOpen}
                                             leastDestructiveRef={cancelRef}
@@ -428,8 +424,26 @@ export function UserPage() {
                                         <AccordionPanel pb={4}>
                                             <Flex direction="column" mb={2} borderWidth="1px" borderRadius="md" p={3}>
                                                 <Text fontWeight="bold">Resumo da Compra</Text>
-                                                <Text>Data do Pedido: {formatDate(order.dateTime)}</Text>
-                                                <Text>Valor Total: R$ {order.totalPurchase.toFixed(2)}</Text>
+                                                <Box flex="1" minWidth="150px" mt={3} mr={2}>
+                                                    <Text>Data do Pedido: {formatDate(order.dateTime)}</Text>
+                                                    <Text>Valor Total: R$ {order.totalPurchase.toFixed(2)}</Text>
+                                                    <Text fontWeight="bold">Endereço de entrega:</Text>
+                                                </Box>
+                                                <Flex justify="space-between" align="flex-start"
+                                                    borderWidth="1px" borderRadius="md" p={3} mb={2} wrap="wrap">
+                                                    <Box flex="1" minWidth="150px" mt={3} mr={2}>
+                                                        <Text className="truncate"><strong>Rua:</strong> {order.address.street} N° {order.address.number}</Text>
+                                                        <Text className="truncate"><strong>Complemento:</strong> {order.address.complement}</Text>
+                                                    </Box>
+                                                    <Box flex="1" minWidth="150px" mt={3}>
+                                                        <Text className="truncate"><strong>Bairro:</strong> {order.address.district}</Text>
+                                                        <Text className="truncate"><strong>Cidade:</strong> {order.address.city}</Text>
+                                                    </Box>
+                                                    <Box flex="1" minWidth="150px" mt={3}>
+                                                        <Text className="truncate"><strong>Estado:</strong> {order.address.state}</Text>
+                                                        <Text className="truncate"><strong>CEP:</strong> {order.address.cep}</Text>
+                                                    </Box>
+                                                </Flex>
                                             </Flex>
                                             <Flex direction="row" gap={4} wrap="wrap">
                                                 {order.shoppingCartProducts.map((shoppingCartProduct) => {
@@ -457,7 +471,7 @@ export function UserPage() {
                                                                 <Text><strong>Descrição:</strong> {details.description}</Text>
                                                                 <Text><strong>Categoria:</strong> {details.category?.name}</Text>
                                                                 <Text><strong>Quantidade:</strong> {shoppingCartProduct.quantity}</Text>
-                                                                <Text><strong>Preço Final:</strong> {shoppingCartProduct.finalPrice}</Text>
+                                                                <Text><strong>Preço Final:</strong> R${shoppingCartProduct.finalPrice}</Text>
                                                             </Box>
 
 

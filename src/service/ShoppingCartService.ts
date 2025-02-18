@@ -1,12 +1,12 @@
-import { ICartItem, IShoppingCart, IShoppingCartProduct } from "@/commons/interface";
+import { IAddress, ICartItem, IShoppingCart, IShoppingCartProduct } from "@/commons/interface";
 import { api } from "@/lib/axios";
 
 const shoppingCartURL = "/shopping-cart";
 
-const finalizePurchase = async (cartItems: ICartItem[]): Promise<any> => {
-  const dateTime = new Date().toISOString(); 
+const finalizePurchase = async (cartItems: ICartItem[], address: IAddress): Promise<any> => {
+  const dateTime = new Date().toISOString();
   const payment = "APPROVED";
-  const totalPurchase = 0.0; 
+  const totalPurchase = 0.0;
 
   const shoppingCartProducts: IShoppingCartProduct[] = cartItems.map((item) => ({
     productId: item.id,
@@ -18,6 +18,7 @@ const finalizePurchase = async (cartItems: ICartItem[]): Promise<any> => {
     dateTime,
     payment,
     totalPurchase,
+    address, 
     shoppingCartProducts,
   };
 
