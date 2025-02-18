@@ -40,7 +40,6 @@ export function CheckoutPage() {
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
-      console.log(user);
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
       setCartItems(cart);
 
