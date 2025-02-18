@@ -38,7 +38,16 @@ export function UserSignInPage() {
         const response = await login(userLogin);
         if (response.status === 200) {
             setPendingApiCall(false);
-            navigate("/home");
+            const redirectUrl = localStorage.getItem("redirectAfterLogin");
+            if (redirectUrl) {
+                localStorage.removeItem("redirectAfterLogin");
+                navigate(redirectUrl);
+                window.location.reload();
+            }
+            else {
+                navigate("/products");
+                window.location.reload();
+            }
         } else {
             setApiError(
                 "Falha ao autenticar no sistema, verifique os dados informados"
@@ -87,7 +96,7 @@ export function UserSignInPage() {
                             <button className="btn btn-primary mb-2" onClick={onClickLogin}>Login</button>
                         </div>
                         <div className="container text-center mb-2">
-                            <Link to="/cadastrar">Cadastrar-se</Link>
+                            <Link to="/cadastrar" color="white">Cadastrar-se</Link>
                         </div>
                     </div>
                 </div>

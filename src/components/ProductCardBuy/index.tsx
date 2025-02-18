@@ -1,6 +1,7 @@
-import { Box, Flex, Stack, Image, Text, Button, Divider } from '@chakra-ui/react';
+import { Box, Flex, Stack, Image, Text, Divider } from '@chakra-ui/react';
+import { BuyButton } from '../BuyButton';
 
-const ProductCardBuy = ({ image, title, description, price, discount }: any) => {
+const ProductCardBuy = ({ image, title, description, price, discount, product }: any) => {
     return (
       <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
         <Flex direction="column">
@@ -19,9 +20,8 @@ const ProductCardBuy = ({ image, title, description, price, discount }: any) => 
                 <Text color='blue.600' fontSize='2xl'>
                   Por: R${(price - (price * discount)).toFixed(2)}
                 </Text>
-                <Button variant='solid' colorScheme='blue'>
-                  Comprar
-                </Button>
+                <BuyButton product={product} />
+                
               </Stack>
 
             </Stack>

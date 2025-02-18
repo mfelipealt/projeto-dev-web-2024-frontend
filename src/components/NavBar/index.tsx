@@ -23,17 +23,15 @@ export function NavBar() {
             console.log("user.name:" + user.name);
           } else {
             setIsAuthenticated(false);
-            navigate("/login", { replace: true });
           }
         } catch (error) {
           setIsAuthenticated(false);
-          navigate("/login", { replace: true });
         }
       }
     };
 
     checkAuth();
-  }, [isAuthenticated, navigate]);
+  }, [navigate]);
 
   const onClickLogout = () => {
     AuthService.logout();
@@ -55,12 +53,7 @@ export function NavBar() {
           </p>
         </div>
         <div className="col-4">
-          <ul className="navbar-nav justify-content-center align-items-center">
-            <li>
-              <NavLink to="/" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link text-white")} style={{ color: "grey" }}>
-                Home
-              </NavLink>
-            </li>
+          <ul className="navbar-nav justify-content-center align-items-center">           
             <li>
               <NavLink to="/categories" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link text-white")} style={{ color: "grey" }}>
                 Categorias
@@ -79,7 +72,7 @@ export function NavBar() {
               {isAuthenticated ? (
                 <>
                   <li>
-                    <span className="nav-link text-white">Olá, {userName}!</span>
+                    <span className="nav-link text-white truncate">Olá, {userName}!</span>
                   </li>
                   <li className="minor">
                     <span className="nav-link text-white">|</span>

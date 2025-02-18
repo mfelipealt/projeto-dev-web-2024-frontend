@@ -16,7 +16,7 @@ export interface IUserLogin {
 }
 
 export interface ICategory {
-    id?: number;
+    id: number;
     name: string;
     type: string;
 }
@@ -28,6 +28,8 @@ export interface IProduct {
     price: number;
     discount: number;
     category: ICategory;
+    imageName?: string;
+    contentType?: string;
 }
 
 export interface ICartItem {
@@ -41,11 +43,25 @@ export interface ICartItem {
 export interface IShoppingCartProduct {
     productId: number;
     quantity: number;
+    finalPrice: number;
 }
 
 export interface IShoppingCart {
+    id?: number;
     dateTime: string;
     payment: string;
     totalPurchase: number;
-    products: IShoppingCartProduct[];
+    address: IAddress;
+    shoppingCartProducts: IShoppingCartProduct[];
+}
+
+export interface IAddress {
+    id?: number;
+    cep: string;
+    street: string;
+    number: string;
+    complement?: string;
+    district: string;
+    city: string;
+    state: string;
 }
